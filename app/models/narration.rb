@@ -4,7 +4,7 @@ class Narration < ActiveRecord::Base
   belongs_to :deck
   #validates :deck, :presence => true
 
-  has_attached_file :wav, storage: :filesystem
+  has_attached_file :wav, storage: :filesystem, path: ':rails_root/files/:url'
   has_attached_file :mp3, storage: :filesystem
 
 end
