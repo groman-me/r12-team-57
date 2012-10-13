@@ -25,6 +25,9 @@
   background-size: cover;
   opacity: 0.9;
 }
+.hero-unit .nav {
+  text-shadow: none;
+}
 .hero-unit h1 {
   margin-bottom: 30px;
   font-size: 80px;

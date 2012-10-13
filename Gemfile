@@ -5,6 +5,7 @@ gem 'mysql2', '~> 0.3.11'
 gem 'jquery-rails', '~> 2.1.3'
 gem 'omniauth-twitter'
 gem 'paperclip', '~> 3.3.0'
+gem 'oembed', '~> 0.1.0'
 
 group :assets do
   gem 'therubyracer', '~> 0.10.2', :platforms => :ruby

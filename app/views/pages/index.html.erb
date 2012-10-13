@@ -1,17 +1,20 @@
 <% content_for :header do %>
   <div class="hero-unit">
     <div class="container">
+      <%= render 'layouts/top_menu' %>
       <div class="span6">
         <h1>Unmute your slides!</h1>
         <p>
           Speaker Voice is the easiest way to add an audio narration
           to your slides from Speaker Deck.
         </p>
-        <% unless user_signed_in? %>
         <p>
-          <%= link_to 'Sign in with Twitter', 'auth/twitter', class: 'btn btn-primary btn-large' %>
+          <% if user_signed_in? %>
+          <%= link_to 'Create a new deck', new_deck_url, class: 'btn btn-primary btn-large', disable_with: 'Please wait...' %>
+          <% else %>
+            <%= link_to 'Enter with Twitter', 'auth/twitter', class: 'btn btn-primary btn-large', disable_with: 'Please wait...' %>
+          <% end %>
         </p>
-        <% end %>
       </div>
     </div>
   </div>
