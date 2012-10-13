@@ -19,3 +19,6 @@
 
 # Ignore deploy config
 /config/deploy.rb
+
+# Ignore Exceptional config
+/config/exceptional.yml
