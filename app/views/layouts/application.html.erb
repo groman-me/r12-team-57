@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SpeakerVoice</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
+  <title>
+    <%= content_for?(:title) ? yield(:title) : 'Speaker Voice - Unmute your slides!' %>
+  </title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+  <div class="page">
+    <header class="header">
+      <%= content_for?(:header) ? yield(:header) : render('layouts/header') %>
+    </header>
+    <div class="body">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </div>
+    <footer class="footer">
+      <%= render('layouts/footer') %>
+    </footer>
+  </div>
+  <%= javascript_include_tag "application" %>
 </body>
 </html>
