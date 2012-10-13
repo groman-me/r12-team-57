@@ -10,3 +10,4 @@ group :assets do
 end
 
 gem 'omniauth-twitter'
+gem 'paperclip', '~> 3.3.0'
