@@ -7,3 +7,6 @@ gem 'jquery-rails'
 group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
+
+
+gem 'omniauth-twitter'
