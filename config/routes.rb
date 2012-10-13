@@ -4,7 +4,9 @@ SpeakerVoice::Application.routes.draw do
   delete 'signout', to: 'sessions#destroy', as: 'signout'
 
   resource :page, only: [:show]
-  resources :decks
+  resources :users do
+    resources :decks
+  end
 
   root to: 'pages#index'
 end

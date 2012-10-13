@@ -3,6 +3,11 @@ class DecksController < ApplicationController
 
   respond_to :html
 
+  def index
+    @decks = user.decks
+    respond_with(@decks)
+  end
+
   def new
     @deck = current_user.decks.new
     respond_with @deck
@@ -24,7 +29,13 @@ class DecksController < ApplicationController
   end
 
   def show
-    @deck = Deck.find_by_id(params[:id].to_s)
+    @deck = user.decks.find_by_id(params[:id].to_s)
     respond_with @deck
+  end
+
+  protected
+
+  def user
+    @user ||= User.find_by_id(params[:user_id].to_s)
   end
 end

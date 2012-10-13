@@ -1,7 +1,7 @@
 <div class="row">
   <div class="span12">
     <div class="deck empty">
-      <%= form_for @deck, html: { class: 'well' } do |f| %>
+      <%= form_for [@deck.user, @deck], html: { class: 'well' } do |f| %>
         <div class="control-group <%= 'error' if f.object.errors.include?(:url) %>">
           <%= f.label :url, 'Copy and paste URL of the slides into field', class: 'control-label' %>
           <div class="controls">

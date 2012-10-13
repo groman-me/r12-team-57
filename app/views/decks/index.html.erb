@@ -1,0 +1,9 @@
+<ul class="thumbnails">
+  <% @decks.each do |deck| %>
+    <li class="span3">
+      <div class="thumbnail">
+        <h4><%= link_to deck.title, user_deck_url(deck.user, deck) %></h4>
+      </div>
+    </li>
+  <% end %>
+</ul>

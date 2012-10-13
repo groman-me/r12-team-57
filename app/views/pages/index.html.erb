@@ -10,9 +10,13 @@
         </p>
         <p>
           <% if user_signed_in? %>
-          <%= link_to 'Create a new deck', new_deck_url, class: 'btn btn-primary btn-large', disable_with: 'Please wait...' %>
+            <%= link_to 'Create a new deck', new_user_deck_url(current_user),
+                class: 'btn btn-primary btn-large',
+                disable_with: 'Please wait...' %>
           <% else %>
-            <%= link_to 'Enter with Twitter', 'auth/twitter', class: 'btn btn-primary btn-large', disable_with: 'Please wait...' %>
+            <%= link_to 'Enter with Twitter', 'auth/twitter',
+                class: 'btn btn-primary btn-large',
+                disable_with: 'Please wait...' %>
           <% end %>
         </p>
       </div>
