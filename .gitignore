@@ -16,3 +16,6 @@
 
 # Ignore database local settings
 [Cc]onfig/database.yml
+
+# Ignore deploy config
+/config/deploy.rb
