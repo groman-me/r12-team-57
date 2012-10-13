@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013015732) do
+ActiveRecord::Schema.define(:version => 20121013054046) do
 
   create_table "decks", :force => true do |t|
     t.string   "url"
@@ -32,8 +32,16 @@ ActiveRecord::Schema.define(:version => 20121013015732) do
     t.integer  "deck_id"
     t.integer  "state"
     t.text     "time_code"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "wav_file_name"
+    t.string   "wav_content_type"
+    t.integer  "wav_file_size"
+    t.datetime "wav_updated_at"
+    t.string   "mp3_file_name"
+    t.string   "mp3_content_type"
+    t.integer  "mp3_file_size"
+    t.datetime "mp3_updated_at"
   end
 
   add_index "narrations", ["deck_id", "state"], :name => "index_narrations_on_deck_id_and_state"
