@@ -7,6 +7,11 @@
           Speaker Voice is the easiest way to add an audio narration
           to your slides from Speaker Deck.
         </p>
+        <% unless user_signed_in? %>
+        <p>
+          <%= link_to 'Sign in with Twitter', 'auth/twitter', class: 'btn btn-primary btn-large' %>
+        </p>
+        <% end %>
       </div>
     </div>
   </div>
