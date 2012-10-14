@@ -4,7 +4,9 @@ class NarrationsController < ApplicationController
   respond_to :html
 
   def create
-    @narration = deck.create_narration(params[:narration].merge(state: Narration::STATES[:not_ready]))
+    attributes = params[:narration].merge(state: Narration::STATES[:not_ready]).
+      merge(params.slice('time_code'))
+    @narration = deck.create_narration(attributes)
     respond_with(@deck.user, @deck, @narration, status: 202, text: 'accepted')
   end
 
