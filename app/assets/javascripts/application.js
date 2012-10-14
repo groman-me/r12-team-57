@@ -5,5 +5,7 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require recorder/recorder
+//= require soundmanager2/soundmanager2-nodebug-jsmin
 //= require speaker_voice/slider
 //= require speaker_voice/timecoder
+//= require speaker_voice/player

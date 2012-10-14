@@ -7,6 +7,8 @@
     <%= button_tag 'PLAY', id: 'play-btn', class: 'btn' %>
 
     <%= button_tag 'UPLOAD', id: 'upload-btn', class: 'btn' %>
+    <%= button_tag 'PLAY LOADED', id: 'play-loaded-btn', class: 'btn' %>
+    <%= button_tag 'STOP LOADED', id: 'stop-loaded-btn', class: 'btn' %>
 
     <div class="deck">
       <%= @deck.html.html_safe %>
@@ -14,69 +16,65 @@
   </div>
 </div>
 <% content_for :javascript do %>
-<!-- script>
-  function timecode(ms) {
-    var hms = {
-      h: Math.floor(ms/(60*60*1000)),
-      m: Math.floor((ms/60000) % 60),
-      s: Math.floor((ms/1000) % 60)
-    };
-    var tc = []; // Timecode array to be joined with ':'
+  <script>
+    var timecoder = new SpeakerVoice.Timecoder();
 
-    tc.push((hms.h < 10 ? "0" + hms.h : hms.h));
-    tc.push((hms.m < 10 ? "0" + hms.m : hms.m));
-    tc.push((hms.s < 10 ? "0" + hms.s : hms.s));
-
-    return tc.join(':');
-  }
-</script -->
-<script>
-  var timecoder = new SpeakerVoice.Timecoder();
-  var slider = new SpeakerVoice.Slider({
-    id: 'presentation_frame_4fd3874cebb4b2001f0277e5',
-    onchange: function(payload) {
-      timecoder.store(payload.number);
-    }
-  });
-
-  Recorder.initialize({
-    swfSrc: '<%= asset_path('recorder/recorder.swf') %>',
-    initialized: function() {}
-  });
-
-  $('#record-btn').click(function() {
-    Recorder.record({
-      start: function() {
-        timecoder.start();
-      },
-      progress: function(ms) {
-        timecoder.progress(ms);
+    var slider = new SpeakerVoice.Slider({
+      id: 'presentation_frame_4fd3874cebb4b2001f0277e5',
+      onchange: function(payload) {
+        timecoder.store(payload.number);
       }
     });
-  });
 
-  $('#stop-btn').click(function() {
-    Recorder.stop();
-    timecoder.stop();
-  });
-
-  $('#play-btn').click(function() {
-    Recorder.play();
-  });
-
-  $('#upload-btn').click(function() {
-    console.log('Recorder.play');
-    Recorder.upload({
-      url: '<%= user_deck_narration_url(@deck.user, @deck) %>',
-      audioParam: 'narration[wav]',
-      params: {
-        <%= request_forgery_protection_token %>: '<%= form_authenticity_token %>',
-        timecode: JSON.stringify(timecoder.timecode)
-      },
-      success: function(responseText) {
-        console.log('Recorder.upload.success(' + responseText + ')');
-      }
+    var player = new SpeakerVoice.Player({
+      id: 'presentation_frame_4fd3874cebb4b2001f0277e5',
+      url: '<%= @deck.narration.mp3.url %>',
+      timecode: <%= @deck.narration.time_code || [] %>
     });
-  });
+
+    Recorder.initialize({
+      swfSrc: '<%= asset_path('recorder/recorder.swf') %>',
+      initialized: function() {}
+    });
+
+    $('#record-btn').click(function() {
+      Recorder.record({
+        start: function() {
+          timecoder.start();
+        },
+        progress: function(ms) {
+          timecoder.progress(ms);
+        }
+      });
+    });
+
+    $('#stop-btn').click(function() {
+      Recorder.stop();
+      timecoder.stop();
+    });
+
+    $('#play-btn').click(function() {
+      Recorder.play();
+    });
+
+    $('#upload-btn').click(function() {
+      Recorder.upload({
+        url: '<%= user_deck_narration_url(@deck.user, @deck) %>',
+        audioParam: 'narration[wav]',
+        params: {
+          <%= request_forgery_protection_token %>: '<%= form_authenticity_token %>',
+          timecode: JSON.stringify(timecoder.timecode)
+        },
+        success: function(responseText) {}
+      });
+    });
+
+    $('#play-loaded-btn').click(function() {
+      player.play();
+    });
+
+    $('#stop-loaded-btn').click(function() {
+      player.stop();
+    });
   </script>
 <% end %>
