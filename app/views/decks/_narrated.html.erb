@@ -1,0 +1,25 @@
+<div class="well record-controls">
+  <%= button_tag 'Play', id: 'play-btn', class: 'btn' %>
+  <%= button_tag 'Stop', id: 'stop-btn', class: 'btn' %>
+</div>
+<div class="deck">
+  <%= deck.html.html_safe %>
+</div>
+
+<% content_for :javascript do %>
+  <script>
+    var player = new SpeakerVoice.Player({
+      id: $('.deck iframe').attr('id'),
+      url: '<%= deck.narration.mp3.url %>',
+      timecode: <%= deck.narration.time_code || [] %>
+    });
+    
+    $('#play-btn').click(function() {
+      player.play();
+    });
+
+    $('#stop-btn').click(function() {
+      player.stop();
+    });
+  </script>
+<% end %>

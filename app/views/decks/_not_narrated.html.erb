@@ -1,0 +1,83 @@
+<div class="well record-controls">
+  <h5>Press "Record", start talking, and change slides using standard controls.</h5>
+  <%= button_tag 'Record', id: 'record-btn', class: 'btn btn-large' %>
+  <%= button_tag 'Stop', id: 'stop-btn', class: 'btn btn-large' %>
+  <%= button_tag 'Play', id: 'play-btn', class: 'btn btn-large' %>
+  <%= button_tag 'Upload', id: 'upload-btn', class: 'btn btn-large' %>
+</div>
+<div class="deck">
+  <%= deck.html.html_safe %>
+</div>
+
+<% content_for :javascript do %>
+  <script>
+    var timecoder = new SpeakerVoice.Timecoder();
+    var slider = new SpeakerVoice.Slider({
+      id: $('.deck iframe').attr('id'),
+      onchange: function(payload) {
+        timecoder.store(payload.number);
+      }
+    });
+
+    Recorder.initialize({
+      swfSrc: '<%= asset_path('recorder/recorder.swf') %>',
+      initialized: function() {
+        $('#stop-btn').attr('disabled', true);
+        $('#play-btn').attr('disabled', true);
+        $('#upload-btn').attr('disabled', true);
+      }
+    });
+
+    $('#record-btn').click(function() {
+      $('#record-btn').attr('disabled', true);
+      $('#stop-btn').attr('disabled', false);
+      $('#play-btn').attr('disabled', true);
+      $('#upload-btn').attr('disabled', true);
+
+      Recorder.record({
+        start: function() {
+          timecoder.start();
+        },
+        progress: function(ms) {
+          timecoder.progress(ms);
+        }
+      });
+    });
+
+    $('#stop-btn').click(function() {
+      $('#record-btn').attr('disabled', false);
+      $('#stop-btn').attr('disabled', false);
+      $('#play-btn').attr('disabled', false);
+      $('#upload-btn').attr('disabled', false);
+      
+      Recorder.stop();
+      timecoder.stop();
+    });
+
+    $('#play-btn').click(function() {
+      $('#record-btn').attr('disabled', true);
+      $('#stop-btn').attr('disabled', false);
+      $('#play-btn').attr('disabled', true);
+      $('#upload-btn').attr('disabled', true);
+      
+      Recorder.play();
+    });
+
+    $('#upload-btn').click(function() {
+      $('#record-btn').attr('disabled', true);
+      $('#stop-btn').attr('disabled', true);
+      $('#play-btn').attr('disabled', true);
+      $('#upload-btn').attr('disabled', true);
+
+      Recorder.upload({
+        url: '<%= user_deck_narration_url(deck.user, deck) %>',
+        audioParam: 'narration[wav]',
+        params: {
+          <%= request_forgery_protection_token %>: '<%= form_authenticity_token %>',
+          timecode: JSON.stringify(timecoder.timecode)
+        },
+        success: function(responseText) {}
+      });
+    });
+  </script>
+<% end %>

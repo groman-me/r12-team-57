@@ -10,6 +10,14 @@ class Narration < ActiveRecord::Base
 
   has_attached_file :wav, storage: :filesystem, path: ':rails_root/files:url'
   has_attached_file :mp3, storage: :filesystem
+  
+  def complete?
+    self.state == STATES[:complete]
+  end
+
+  def in_progress?
+    self.state == STATES[:in_progress]
+  end
 
   protected
 

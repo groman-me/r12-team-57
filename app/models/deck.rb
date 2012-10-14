@@ -32,7 +32,15 @@ class Deck < ActiveRecord::Base
       client.fetch(self.url, maxwidth: 780) || {}
     end
   end
-
+  
+  def narrated?
+    self.narration.present? && self.narration.complete?
+  end
+  
+  def in_progress?
+    self.narration.present? && self.narration.in_progress?
+  end
+  
   private
 
   def url_is_a_speakerdeck_presentation
