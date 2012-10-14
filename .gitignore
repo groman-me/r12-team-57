@@ -25,3 +25,7 @@
 
 # Ignore Omniauth config
 /config/omniauth.yml
+
+# Ignore sound files
+/files/
+/public/system
