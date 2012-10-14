@@ -3,7 +3,7 @@
     <div class="deck empty">
       <%= form_for [@deck.user, @deck], html: { class: 'well' } do |f| %>
         <div class="control-group <%= 'error' if f.object.errors.include?(:url) %>">
-          <%= f.label :url, 'Copy and paste URL of the slides into field', class: 'control-label' %>
+          <%= f.label :url, 'Copy and paste slides URL into the field', class: 'control-label' %>
           <div class="controls">
             <%= f.url_field :url, placeholder: 'http://', autofocus: true,
                 class: 'span8' %>
