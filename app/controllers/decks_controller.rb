@@ -29,13 +29,13 @@ class DecksController < ApplicationController
   end
 
   def show
-    @deck = user.decks.find_by_id(params[:id].to_s)
+    @deck = user.decks.find(params[:id].to_s)
     respond_with @deck
   end
 
   protected
 
   def user
-    @user ||= User.find_by_id(params[:user_id].to_s)
+    @user ||= User.find(params[:user_id].to_s)
   end
 end
