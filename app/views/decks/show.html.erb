@@ -3,5 +3,86 @@
     <div class="deck">
       <%= @deck.html.html_safe %>
     </div>
+    <div id="progress-display"></div>
+    
+    <%= button_tag 'RECORD', id: 'record-btn', class: 'btn' %>
+    <%= button_tag 'STOP', id: 'stop-btn', class: 'btn' %>
+    <%= button_tag 'PLAY', id: 'play-btn', class: 'btn' %>
+    <%= button_tag 'UPLOAD', id: 'upload-btn', class: 'btn' %>
+    <%= button_tag 'TICK', id: 'tick-btn', class: 'btn' %>
   </div>
 </div>
+<% content_for :javascript do %>
+<script>
+  function timecode(ms) {
+    var hms = {
+      h: Math.floor(ms/(60*60*1000)),
+      m: Math.floor((ms/60000) % 60),
+      s: Math.floor((ms/1000) % 60)
+    };
+    var tc = []; // Timecode array to be joined with ':'
+
+    tc.push((hms.h < 10 ? "0" + hms.h : hms.h));
+    tc.push((hms.m < 10 ? "0" + hms.m : hms.m));
+    tc.push((hms.s < 10 ? "0" + hms.s : hms.s));
+
+    return tc.join(':');
+  }
+
+  Recorder.initialize({
+    swfSrc: '<%= asset_path('recorder/recorder.swf') %>',
+    initialized: function() {}
+  });
+
+  $('#record-btn').click(function() {
+    Recorder.record({
+      start: function() {
+        console.log('Recorder.record.start');
+      },
+      progress: function(ms) {
+        $('#progress-display').text(timecode(ms));
+      }
+    });
+  });
+
+  $('#stop-btn').click(function() {
+    Recorder.stop();
+    console.log('Recorder.stop');
+  });
+
+  $('#play-btn').click(function() {
+    console.log('Recorder.play');
+    Recorder.play({
+      progress: function(ms) {
+        $('#progress-display').text(timecode(ms));
+      }
+    });
+  });
+
+  $('#upload-btn').click(function() {
+    console.log('Recorder.play');
+    Recorder.upload({
+      url: '<%= user_deck_narration_url(@deck.user, @deck) %>',
+      audioParam: 'narration[wav]',
+      params: {
+        <%= request_forgery_protection_token %>: '<%= form_authenticity_token %>'
+      },
+      success: function(responseText) {
+        console.log('Recorder.upload.success(' + responseText + ')');
+      }
+    });
+  });
+  
+  $('#tick-btn').click(function() {
+    
+  });
+
+  iframe = document.getElementById('presentation_frame_4fd3874cebb4b2001f0277e5');
+
+  function sendCommand() {
+    var e;
+    e = 1 <= arguments.length ? Array.prototype.slice.call(arguments, 0) : [];
+    iframe.contentWindow.postMessage(JSON.stringify(e), 'http://speakerdeck.com')
+  }
+</script>
+<% end %>

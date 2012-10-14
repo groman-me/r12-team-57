@@ -5,7 +5,9 @@ SpeakerVoice::Application.routes.draw do
 
   resource :page, only: [:show]
   resources :users do
-    resources :decks
+    resources :decks do
+      resource :narration, only: [:create]
+    end
   end
 
   root to: 'pages#index'
