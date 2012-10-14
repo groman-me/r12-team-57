@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013110949) do
+ActiveRecord::Schema.define(:version => 20121014205401) do
 
   create_table "decks", :force => true do |t|
     t.string   "url"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20121013110949) do
     t.text     "html"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "iframeid"
   end
 
   add_index "decks", ["url"], :name => "index_decks_on_url"

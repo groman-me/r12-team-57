@@ -23,6 +23,7 @@ class Deck < ActiveRecord::Base
       deck.html = deck.oembed['html']
       deck.width = deck.oembed['width']
       deck.height = deck.oembed['height']
+      deck.iframeid = URI.parse(deck.oembed['html'].match(/\/\/[\w.\/]*/)[0]).path.gsub('/embed/','')
     end
   end
 
