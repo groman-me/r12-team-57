@@ -46,7 +46,7 @@ class Deck < ActiveRecord::Base
   end
   
   def in_progress?
-    self.narration.present? && self.narration.in_progress?
+    self.narration.present? && !self.narration.complete?
   end
   
   private

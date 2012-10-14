@@ -15,10 +15,6 @@ class Narration < ActiveRecord::Base
     self.state == STATES[:complete]
   end
 
-  def in_progress?
-    self.state == STATES[:in_progress]
-  end
-
   def async_encode
     workers_count = begin
       Resque.info[:workers]
