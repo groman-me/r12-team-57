@@ -7,6 +7,9 @@ class Deck < ActiveRecord::Base
 
   validates :url, presence: true
   validate :url_is_a_speakerdeck_presentation
+  
+  scope :random, order("rand()").limit(16)
+  scope :narrated, joins(:narration).where(narrations: { state: Narration::STATES[:complete] })
 
   def state
     if narration.blank?

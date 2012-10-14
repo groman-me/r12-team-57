@@ -25,11 +25,15 @@
 <% end %>
 
 <ul class="thumbnails">
-  <%- Deck.order("rand()").limit(8).each do |deck| -%>
+  <% Deck.random.narrated.each do |deck| %>
     <li class="span3">
-      <%= link_to(image_tag(deck.thumb_url, size: '210 × 157'),
-                  user_deck_url(deck.user, deck), class: 'thumbnail') %>
-      <p><%= deck.title  %> </p>
+      <%= link_to user_deck_url(deck.user, deck), class: 'thumbnail' do %>
+        <%= image_tag(deck.thumb_url, size: '210x157') %>
+        <h5>
+          <%= deck.title %>
+          <small>by <%= deck.author %></small>
+        </h5>
+      <% end %>
     </li>
-  <%- end -%>
+  <% end %>
 </ul>
