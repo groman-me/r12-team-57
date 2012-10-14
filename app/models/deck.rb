@@ -33,7 +33,11 @@ class Deck < ActiveRecord::Base
       client.fetch(self.url, maxwidth: 780) || {}
     end
   end
-  
+
+  def thumb_url
+    "https://speakerd.s3.amazonaws.com/presentations/#{iframeid}/thumb_slide_0.jpg"
+  end
+
   def narrated?
     self.narration.present? && self.narration.complete?
   end
