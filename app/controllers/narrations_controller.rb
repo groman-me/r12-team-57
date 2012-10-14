@@ -6,7 +6,9 @@ class NarrationsController < ApplicationController
   def create
     attributes = params[:narration].merge(state: Narration::STATES[:not_ready]).
       merge(params.slice('time_code'))
+    deck.narration.destroy if deck.narration
     @narration = deck.create_narration(attributes)
+    @narration.async_encode
     respond_with(@deck.user, @deck, @narration, status: 202, text: 'accepted')
   end
 

@@ -11,6 +11,20 @@ class Narration < ActiveRecord::Base
   has_attached_file :wav, storage: :filesystem, path: ':rails_root/files:url'
   has_attached_file :mp3, storage: :filesystem
 
+  def async_encode
+    workers_count = begin
+      Resque.info[:workers]
+    rescue
+      0
+    end
+
+    if workers_count > 0
+      Resque.enqueue NarrationEncoder, self.id
+    else
+      NarrationEncoder.perform self.id
+    end
+  end
+
   protected
 
   def check_state
