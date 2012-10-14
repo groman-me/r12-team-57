@@ -1,12 +1,14 @@
 require "sound_encoder"
 
 class NarrationEncoder
+  @queue = :sound_encoding
+
   def self.perform(narration_id)
     narration = Narration.find narration_id
     narration.update_attributes!(state: Narration::STATES[:in_progress])
 
     wav_path = narration.wav.path
-    ext = File.extname(source_path)
+    ext = File.extname(wav_path)
     mp3_file_name = File.basename(wav_path, ext) + '.mp3'
     mp3_file = Tempfile.new(mp3_file_name)
     begin
@@ -20,6 +22,5 @@ class NarrationEncoder
       mp3_file.close
       mp3_file.unlink
     end
-
   end
 end

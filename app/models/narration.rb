@@ -19,6 +19,20 @@ class Narration < ActiveRecord::Base
     self.state == STATES[:in_progress]
   end
 
+  def async_encode
+    workers_count = begin
+      Resque.info[:workers]
+    rescue
+      0
+    end
+
+    if workers_count > 0
+      Resque.enqueue NarrationEncoder, self.id
+    else
+      NarrationEncoder.perform self.id
+    end
+  end
+
   protected
 
   def check_state
