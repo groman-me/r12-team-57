@@ -1,13 +1,21 @@
-<ul class="thumbnails">
-  <% @decks.each do |deck| %>
-    <li class="span3">
-      <div class="thumbnail">
-        <h4>
-          <%= link_to deck.title, user_deck_url(deck.user, deck) %>
-          <small>by <%= deck.author %></small>
-        </h4>
-        <p></p>
-      </div>
-    </li>
-  <% end %>
-</ul>
+<% content_for :title, 'Your decks' %>
+
+<% if @decks.present? %>
+  <ul class="thumbnails">
+    <% @decks.each do |deck| %>
+      <li class="span3">
+        <%= link_to user_deck_url(deck.user, deck), class: 'thumbnail' do %>
+          <%= image_tag(deck.thumb_url, size: '210x157') %>
+          <h5>
+            <%= deck.title %>
+            <small>by <%= deck.author %></small>
+          </h5>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+<div class="well">
+  <h3>It's sad, but your list is empty. Go ahead and <%= link_to 'create a new deck', new_user_deck_url(current_user) %> :)</h3>
+</div>
+<% end %>

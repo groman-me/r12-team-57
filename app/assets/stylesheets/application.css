@@ -11,6 +11,9 @@ html, body {
 .nav .button_to {
   margin: 0;
 }
+a.thumbnail {
+  text-decoration: none;
+}
 .page {
   position: relative;
   min-height: 100%;
