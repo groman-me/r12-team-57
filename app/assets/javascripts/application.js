@@ -5,4 +5,5 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require recorder/recorder
-//= require_tree .
+//= require speaker_voice/slider
+//= require speaker_voice/timecoder
