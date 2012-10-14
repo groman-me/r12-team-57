@@ -6,6 +6,7 @@ class Deck < ActiveRecord::Base
   has_one :narration, dependent: :destroy
 
   validates :url, presence: true
+  validate :url_is_a_speakerdeck_presentation
 
   def state
     if narration.blank?
@@ -13,5 +14,28 @@ class Deck < ActiveRecord::Base
     else
       narration.state
     end
+  end
+
+  def self.create_from_oembed_deck(attributes)
+    create(attributes) do |deck|
+      deck.title = deck.oembed['title']
+      deck.author = deck.oembed['author_name']
+      deck.html = deck.oembed['html']
+      deck.width = deck.oembed['width']
+      deck.height = deck.oembed['height']
+    end
+  end
+
+  def oembed
+    @oembed ||= begin
+      client = SpeakerDeck.new
+      client.fetch(self.url, maxwidth: 780) || {}
+    end
+  end
+
+  private
+
+  def url_is_a_speakerdeck_presentation
+    errors.add(:url, "can't find slides") if oembed.blank?
   end
 end

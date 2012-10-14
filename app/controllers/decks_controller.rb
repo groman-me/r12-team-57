@@ -5,32 +5,22 @@ class DecksController < ApplicationController
 
   def index
     @decks = user.decks
-    respond_with(@decks)
+    respond_with current_user, @decks
   end
 
   def new
     @deck = current_user.decks.new
-    respond_with @deck
+    respond_with @deck.user, @deck
   end
 
   def create
-    @deck = current_user.decks.create(params[:deck]) do |instance|
-      client = SpeakerDeck.new
-      oembed = client.fetch(instance.url, maxwidth: 780) || {}
-
-      instance.title = oembed['title']
-      instance.author = oembed['author_name']
-      instance.html = oembed['html']
-      instance.width = oembed['width']
-      instance.height = oembed['width']
-    end
-
-    respond_with @deck
+    @deck = current_user.decks.create_from_oembed_deck(params[:deck])
+    respond_with @deck.user, @deck
   end
 
   def show
     @deck = user.decks.find(params[:id].to_s)
-    respond_with @deck
+    respond_with @deck.user, @deck
   end
 
   protected
