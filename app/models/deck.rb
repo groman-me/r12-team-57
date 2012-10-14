@@ -35,7 +35,7 @@ class Deck < ActiveRecord::Base
   end
 
   def thumb_url
-    "https://speakerd.s3.amazonaws.com/presentations/#{iframeid}/thumb_slide_0.jpg"
+    "http://speakerd.s3.amazonaws.com/presentations/#{iframeid}/thumb_slide_0.jpg"
   end
 
   def narrated?
