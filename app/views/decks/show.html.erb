@@ -1,80 +1,11 @@
+<% content_for :title, @deck.title %>
 <div class="row">
   <div class="span12">
-    <div id="progress-display"></div>
-
-    <%= button_tag 'RECORD', id: 'record-btn', class: 'btn' %>
-    <%= button_tag 'STOP', id: 'stop-btn', class: 'btn' %>
-    <%= button_tag 'PLAY', id: 'play-btn', class: 'btn' %>
-
-    <%= button_tag 'UPLOAD', id: 'upload-btn', class: 'btn' %>
-    <%= button_tag 'PLAY LOADED', id: 'play-loaded-btn', class: 'btn' %>
-    <%= button_tag 'STOP LOADED', id: 'stop-loaded-btn', class: 'btn' %>
-
-    <div class="deck">
-      <%= @deck.html.html_safe %>
-    </div>
+    <%= render(partial: 'decks/narrated',
+        locals: { deck: @deck }) if @deck.narrated? %>
+    <%= render(partial: 'decks/in_progress',
+        locals: { deck: @deck }) if @deck.in_progress? %>
+    <%= render(partial: 'decks/not_narrated',
+        locals: { deck: @deck }) if !@deck.narrated? %>
   </div>
 </div>
-<% content_for :javascript do %>
-  <script>
-    var timecoder = new SpeakerVoice.Timecoder();
-
-    var slider = new SpeakerVoice.Slider({
-      id: 'presentation_frame_4fd3874cebb4b2001f0277e5',
-      onchange: function(payload) {
-        timecoder.store(payload.number);
-      }
-    });
-
-    var player = new SpeakerVoice.Player({
-      id: 'presentation_frame_4fd3874cebb4b2001f0277e5',
-      url: '<%= @deck.narration.mp3.url %>',
-      timecode: <%= @deck.narration.time_code || [] %>
-    });
-
-    Recorder.initialize({
-      swfSrc: '<%= asset_path('recorder/recorder.swf') %>',
-      initialized: function() {}
-    });
-
-    $('#record-btn').click(function() {
-      Recorder.record({
-        start: function() {
-          timecoder.start();
-        },
-        progress: function(ms) {
-          timecoder.progress(ms);
-        }
-      });
-    });
-
-    $('#stop-btn').click(function() {
-      Recorder.stop();
-      timecoder.stop();
-    });
-
-    $('#play-btn').click(function() {
-      Recorder.play();
-    });
-
-    $('#upload-btn').click(function() {
-      Recorder.upload({
-        url: '<%= user_deck_narration_url(@deck.user, @deck) %>',
-        audioParam: 'narration[wav]',
-        params: {
-          <%= request_forgery_protection_token %>: '<%= form_authenticity_token %>',
-          timecode: JSON.stringify(timecoder.timecode)
-        },
-        success: function(responseText) {}
-      });
-    });
-
-    $('#play-loaded-btn').click(function() {
-      player.play();
-    });
-
-    $('#stop-loaded-btn').click(function() {
-      player.stop();
-    });
-  </script>
-<% end %>
