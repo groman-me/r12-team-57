@@ -13,6 +13,7 @@
         </li>
       </ul>
     </li>
+    <li><%= image_tag current_user.profile_image_url, class: 'img-rounded' %></li>
   <% else %>
     <li><%= link_to 'Log in', '/auth/twitter' %></li>
   <% end %>

@@ -7,7 +7,7 @@ class Deck < ActiveRecord::Base
 
   validates :url, presence: true
   validate :url_is_a_speakerdeck_presentation
-  
+
   scope :random, order("rand()").limit(16)
   scope :narrated, joins(:narration).where(narrations: { state: Narration::STATES[:complete] })
 
@@ -44,11 +44,11 @@ class Deck < ActiveRecord::Base
   def narrated?
     self.narration.present? && self.narration.complete?
   end
-  
+
   def in_progress?
     self.narration.present? && !self.narration.complete?
   end
-  
+
   private
 
   def url_is_a_speakerdeck_presentation
