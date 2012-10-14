@@ -14,7 +14,7 @@
   background: url(speaker-deck-url.png) no-repeat;
 }
 .deck .overlay {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   width: 780px;
