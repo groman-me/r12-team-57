@@ -23,6 +23,7 @@ class Deck < ActiveRecord::Base
       deck.html = deck.oembed['html']
       deck.width = deck.oembed['width']
       deck.height = deck.oembed['height']
+      deck.iframeid = URI.parse(deck.oembed['html'].match(/\/\/[\w.\/]*/)[0]).path.gsub('/embed/','')
     end
   end
 
@@ -32,7 +33,11 @@ class Deck < ActiveRecord::Base
       client.fetch(self.url, maxwidth: 780) || {}
     end
   end
-  
+
+  def thumb_url
+    "http://speakerd.s3.amazonaws.com/presentations/#{iframeid}/thumb_slide_0.jpg"
+  end
+
   def narrated?
     self.narration.present? && self.narration.complete?
   end
