@@ -7,6 +7,8 @@ class Narration < ActiveRecord::Base
   validates :deck, :presence => true
   validates_inclusion_of :state, in: STATES.values
   validate :check_state
+  validates_attachment_size :wav, :less_than => 130.megabytes
+  validates_attachment_size :mp3, :less_than => 100.megabytes
 
   has_attached_file :wav, storage: :filesystem, path: ':rails_root/files:url'
   has_attached_file :mp3, storage: :filesystem

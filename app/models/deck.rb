@@ -5,6 +5,7 @@ class Deck < ActiveRecord::Base
   belongs_to :user
   has_one :narration, dependent: :destroy
 
+  validates :user, presence: true
   validates :url, presence: true
   validate :url_is_a_speakerdeck_presentation
 
